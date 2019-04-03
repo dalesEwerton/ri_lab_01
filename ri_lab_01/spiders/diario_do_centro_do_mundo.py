@@ -18,14 +18,9 @@ class DiarioDoCentroDoMundoSpider(scrapy.Spider):
         self.start_urls = list(data.values())
 
     def parse(self, response):
-        #
-        # inclua seu código aqui
-        #
-        page = response.url.split("/")[-2]
-        filename = 'quotes-%s.html' % page
-        with open(filename, 'wb') as f:
-            f.write(response.body)
-        self.log('Saved file %s' % filename)
-        #
-        #
-        #
+        i = RiLab01Item()
+        i['text'] = response.css('h3.td-module-title a::attr(href)').getall()
+        i['author'] = response.url
+        
+        yield i
+        
